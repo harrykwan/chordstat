@@ -1,22 +1,31 @@
 const puppeteer = require("puppeteer");
 const fs = require("fs");
 
-fs.readFile("jaychou/guitarians.txt", "utf8", async function (err, data) {
-  if (err) throw err;
-  console.log("OK: ");
-  console.log(data.split("\n"));
-  const alllinks = data.split("\n");
-  for (var j = 0; j < alllinks.length; j++) {
-    console.log(alllinks[j]);
-    await getpage(alllinks[j], function (result) {
-      console.log(result);
-      fs.writeFile("output/jaychou-" + j + ".txt", result, function (err) {
-        if (err) return console.log(err);
-        console.log("written");
-      });
-    });
-  }
-});
+function getchordsheets(singername, websitename) {
+  fs.readFile(
+    singername + "/" + websitename + ".txt",
+    "utf8",
+    async function (err, data) {
+      if (err) throw err;
+      console.log("OK: ");
+      const alllinks = data.split("\n");
+      for (let j = 0; j < alllinks.length; j++) {
+        console.log(alllinks[j]);
+        await getpage(alllinks[j], function (result) {
+          console.log(result);
+          fs.writeFile(
+            "output/" + websitename + "/" + singername + "-" + j + ".txt",
+            result,
+            function (err) {
+              if (err) return console.log(err);
+              console.log("written");
+            }
+          );
+        });
+      }
+    }
+  );
+}
 
 async function getpage(link, callback) {
   try {
@@ -43,7 +52,7 @@ async function getpage(link, callback) {
         }
       })();
     } else if (link.indexOf("polygonguitar.blogspot.com") != -1) {
-      (async () => {
+      return (async () => {
         try {
           const browser = await puppeteer.launch();
           const page = await browser.newPage();
@@ -64,7 +73,7 @@ async function getpage(link, callback) {
         }
       })();
     } else if (link.indexOf("daydayguitar.blogspot.com") != -1) {
-      (async () => {
+      return (async () => {
         try {
           const browser = await puppeteer.launch();
           const page = await browser.newPage();
@@ -86,7 +95,7 @@ async function getpage(link, callback) {
       })();
     } else if (link.indexOf("blog.xuite.net") != -1) {
       // return callback('not supported');
-      (async () => {
+      return (async () => {
         try {
           const browser = await puppeteer.launch();
           const page = await browser.newPage();
@@ -111,7 +120,7 @@ async function getpage(link, callback) {
         }
       })();
     } else if (link.indexOf("91pu.com") != -1) {
-      (async () => {
+      return (async () => {
         try {
           const browser = await puppeteer.launch();
           const page = await browser.newPage();
@@ -133,7 +142,7 @@ async function getpage(link, callback) {
         }
       })();
     } else if (link.indexOf("tabs.ultimate-guitar.com") != -1) {
-      (async () => {
+      return (async () => {
         try {
           const browser = await puppeteer.launch();
           const page = await browser.newPage();
@@ -154,7 +163,7 @@ async function getpage(link, callback) {
         }
       })();
     } else if (link.indexOf("chord4.com/tabs") != -1) {
-      (async () => {
+      return (async () => {
         try {
           const browser = await puppeteer.launch();
           const page = await browser.newPage();
@@ -175,7 +184,7 @@ async function getpage(link, callback) {
         }
       })();
     } else if (link.indexOf("chords-and-tabs.net") != -1) {
-      (async () => {
+      return (async () => {
         try {
           const browser = await puppeteer.launch();
           const page = await browser.newPage();
@@ -196,7 +205,7 @@ async function getpage(link, callback) {
         }
       })();
     } else if (link.indexOf("polygon.guitars") != -1) {
-      (async () => {
+      return (async () => {
         try {
           const browser = await puppeteer.launch();
           const page = await browser.newPage();
@@ -247,3 +256,5 @@ async function getpage(link, callback) {
     callback("server error");
   }
 }
+
+exports.getchordsheets = getchordsheets;

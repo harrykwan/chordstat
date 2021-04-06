@@ -2,28 +2,34 @@ const { Note, Key } = require("tonal");
 const jsonfile = require("jsonfile");
 const getchordfromtxt = require("./getchordfromtxt");
 
-function savetofile(num) {
+function savetofile(singername, websitename, num) {
+  var chordtrees = {};
   for (let n = 0; n < num; n++) {
     getchordfromtxt.getchordfromtxt(
-      "./output/guitarians/jaychou-" + n + ".txt",
+      "./output/" + websitename + "/" + singername + "-" + n + ".txt",
       function (result) {
         // getkey(result);
-        var chordtree = getchordtree(result);
+        var chordtree = getchordtree(result, chordtrees);
         console.log(chordtree);
         // var steps = getsteps(result)
         // const freqct = calcfequency(steps, 4);
         // const file = "./tmp/data-" + n + ".json";
         // jsonfile.writeFileSync(file, freqct);
+        const file =
+          "./tmp/" + singername + "-" + websitename + "-alldata.json";
+        jsonfile.writeFileSync(file, chordtree);
       }
     );
   }
 }
 
-function getchordtree(result) {
+function getchordtree(result, chordtrees) {
   const chordprogressionjson = result.chordprogressionjson.map((x) => {
     return x.root + x.name;
   });
-  var chordtree = {};
+  var chordtree;
+  if (chordtrees) chordtree = chordtrees;
+  else chordtree = {};
   for (var j = 0; j < chordprogressionjson.length; j++) {
     const normalizechord = chordprogressionjson[j];
     if (!chordtree[normalizechord]) {
