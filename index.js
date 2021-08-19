@@ -4,4 +4,6 @@ const getchordfromtxt = require("./getchordfromtxt");
 
 // getchordsheets.getchordsheets("yogalin", "91");
 
-savechordprogression.savetofile("yogalin", "91", 40);
+getchordsheets.getchordsheets("crowdlu", "91");
+
+// savechordprogression.savetofile("yogalin", "91", 40);
